@@ -780,11 +780,17 @@ class lizmapProject{
                 }
             } else {
                 $layers =  $qgsLoad->xpath('//legendlayer');
+				$lo = 0; // jja
                 foreach( $layers as $layer ){
                     if( $layer->attributes()->drawingOrder and $layer->attributes()->drawingOrder >= 0 ){
                         $layersOrder[(string)$layer->attributes()->name] = (integer)$layer->attributes()->drawingOrder;
-                    }
+                    } else { // jja
+						$layersOrder[(string)$layer->attributes()->name] = $lo;
+						$lo+=1;
+					} // jja
                 }
+				// assuming all drawingOrder = -1 OR all drawingOrder >= 0
+				if ($lo > 0) $layersOrder = array_reverse($layersOrder); // jja
             }
         }
         return $layersOrder;
